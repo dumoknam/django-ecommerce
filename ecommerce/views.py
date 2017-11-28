@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from ecommerce.forms import ContactForm
 
 
 def home_page(request):
@@ -19,11 +20,19 @@ def about_page(request):
 
 
 def contact_page(request):
+    contact_form = ContactForm(request.POST or None)
     context = {
         'title': 'Contact',
         'content': 'Contact to everyone',
+        'form': contact_form,
     }
-    return render(request, "home_page.html", context)
+    if contact_form.is_valid():
+        print('valid contact_form')
+        print(contact_form.cleaned_data)
+
+    # if request.method == 'POST':
+    #     print(request.POST)
+    return render(request, "contact/view.html", context)
 
 
 def home_page_raw(request):
