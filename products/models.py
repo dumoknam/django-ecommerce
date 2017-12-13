@@ -16,6 +16,11 @@ def upload_image_path(instance, filename):
     return f'products/{new_filename}/{upload_filename}'
 
 
+class ProductManager(models.Manager):
+    def get_by_id(self, id):
+        return self.get_queryset().filter(id=id)
+
+
 class Product(models.Model):
     title = models.CharField(max_length=120)
     description = models.TextField()
@@ -25,6 +30,8 @@ class Product(models.Model):
     image = models.ImageField(upload_to=upload_image_path,
                               null=True,
                               blank=False)
+
+    objects = ProductManager()
 
     def __str__(self):
         return self.title
